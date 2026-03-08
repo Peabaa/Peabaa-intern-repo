@@ -19,3 +19,7 @@ I learned that PRs in a professional setting is a lot smaller and concise, prior
 ### What makes a good commit message?
 
 A good commit message is clear, concise, and usually less than 50 characters for readability. It is descriptive in spite of the conciseness and may use imperative moods (e.g. fix: , add: , debug: ) to let everyone in the repository know what these commits may do to the code. A good commit provides good context to the reader without having to read every single line of code.
+
+### How does a clear commit message help in team collaboration?
+
+Clear commit messages help speed up the process of code reviewing. It helps developers in a team understand the evolution of the feature and the path it's going through. It is somewhat like a history-keeping method with short descriptions that pinpoints a specific change, addition, debug, or fix in the code.
