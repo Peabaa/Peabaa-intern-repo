@@ -23,3 +23,14 @@ A good commit message is clear, concise, and usually less than 50 characters for
 ### How does a clear commit message help in team collaboration?
 
 Clear commit messages help speed up the process of code reviewing. It helps developers in a team understand the evolution of the feature and the path it's going through. It is somewhat like a history-keeping method with short descriptions that pinpoints a specific change, addition, debug, or fix in the code.
+
+### How can poor commit messages cause issues later?
+
+Poor commit messages can cause a lot of confusion, whether upfront or down the line. It does not offer guidance on what a certain commit does, especially when developers backtrack to that commit to try and understand what was going on. This may lead to wasted time figuring out what this commit is supposed to do anda generally cluttered and unprofessional repository.
+
+**Make three commits in your repo with different commit message styles:**
+These are the three commit messages I made throughout this file:
+
+1. Vague: `git commit -m "added answer"`
+2. Overly Detailed: `git commit -m "I opened git-understanding.md and added my answer to the 2nd question. I also made small adjustments to the formatting of the whole markdown file for readability."`
+3. Well-structured: `git commit -m "add: added answer to 3rd question of Issue #49"`
