@@ -1,1 +1,2 @@
 Line 1 is working
+Line 2 is working
