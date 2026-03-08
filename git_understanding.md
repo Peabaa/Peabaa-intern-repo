@@ -34,3 +34,17 @@ These are the three commit messages I made throughout this file:
 1. Vague: `git commit -m "added answer"`
 2. Overly Detailed: `git commit -m "I opened git-understanding.md and added my answer to the 2nd question. I also made small adjustments to the formatting of the whole markdown file for readability."`
 3. Well-structured: `git commit -m "add: added answer to 3rd question of Issue #49"`
+
+## Issue #50 Understand git bisect
+
+### What does git bisect do?
+
+`git bisect` performs a binary search through a project's commit history to pinpoint the exact commit that introduced a bug or issue. By setting a "good" boundary (a past commit where the code worked) and a "bad" boundary (the current broken state), it continuously splits the timeline in half, asking the developer to test the code at each step until the specific culprit is cornered.
+
+### When would you use it in a real-world debugging situation?
+
+In a complex frontend environment with constant updates, a UI component might suddenly stop working, like a focus timer failing to start or a dashboard layout breaking. If the bug is buried under dozens of recent pull requests from multiple teammates and it is completely unclear which file caused the issue, this tool allows for tracking it down by simply testing the live local server instead of blindly reading through hundreds of files.
+
+### How does it compare to manually reviewing commits?
+
+Manually reviewing commits is tedious, slow, and highly prone to human error, as it requires guessing which file might be broken and reading the code line-by-line. `git bisect`, on the other hand, operates on logarithmic time. It is mathematically much faster and relies entirely on testing the application's behavior rather than reading the code itself, saving hours of debugging time.
