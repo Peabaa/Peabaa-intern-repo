@@ -1,3 +1,4 @@
 Line 1 is working
 Line 2 is working
 ERROR: Line 3 is BROKEN
+Line 4 is working
