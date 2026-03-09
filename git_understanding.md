@@ -84,3 +84,17 @@ After entering the `git merge conflict-test` command, VS Code was able to show m
 ### What did you learn?
 
 I learned that merge conflicts are not "errors" or signs that I broke the repository; they are actually a safety mechanism built into Git. As a Frontend Developer Intern, this will be crucial when I am working on the same UI components as my teammates, as it forces us to manually verify our code logic before it gets combined into the production branch.
+
+## Issue #53 Branching & Team Collaboration
+
+### Why is pushing directly to main problematic?
+
+Pushing directly to main is risky because it bypasses the review process. If I accidentally commit code with a syntax error or a broken UI component, it immediately affects the "source of truth" for the entire team and could break the live application for users. It also makes it difficult for other developers to work on their own features without getting interrupted by my unverified changes.
+
+### How do branches help with reviewing code?
+
+Branches allow for a structured "Pull Request" process. By keeping my frontend changes on a separate branch, I can present a clean, isolated set of modifications to my lead or peers. This makes it much easier for them to understand the specific scope of my work, leave targeted feedback, and ensure the code meets quality standards before it is ever merged into the main project.
+
+### What happens if two people edit the same file on different branches?
+
+When two people edit the same file on different branches, Git can usually handle it if they edited different sections of the file. However, if both developers modified the exact same lines of code, a Merge Conflict occurs when they try to combine their branches. It is not a failure, but a safety feature that requires a person to manually review both versions and decide which one to keep, ensuring that no important logic is accidentally overwritten.
