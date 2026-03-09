@@ -98,3 +98,17 @@ Branches allow for a structured "Pull Request" process. By keeping my frontend c
 ### What happens if two people edit the same file on different branches?
 
 When two people edit the same file on different branches, Git can usually handle it if they edited different sections of the file. However, if both developers modified the exact same lines of code, a Merge Conflict occurs when they try to combine their branches. It is not a failure, but a safety feature that requires a person to manually review both versions and decide which one to keep, ensuring that no important logic is accidentally overwritten.
+
+## Issue #54 Git concept: staging vs committing
+
+### What is the difference between staging and committing?
+
+Staging (`git add`) is the preparation phase, where you specifically select which file modifications will be included in the next update. Committing (`git commit`) is the act of permanently recording those selected changes into the local repository's history.
+
+### Why does Git separate these two steps?
+
+Git separates these steps to provide precise control over the project's history. If every saved change was automatically committed, the repository history would be a chaotic, unreadable mess of half-finished thoughts. The staging area acts as a buffer zone, allowing developers to carefully review, organize, and group related code changes together before cementing them into the permanent timeline.
+
+### When would you want to stage changes without committing?
+
+During development, I might be working on multiple things simultaneously—for example, building a new React UI component, adjusting a CSS file, and fixing a random typo in a Markdown document. I would want to stage only the React and CSS files together because they are related to the same feature, leaving the Markdown file unstaged. This allows me to create a clean, single-purpose commit for the UI update, and then a completely separate commit later for the documentation fix.
