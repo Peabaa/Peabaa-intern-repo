@@ -48,3 +48,25 @@ In a complex frontend environment with constant updates, a UI component might su
 ### How does it compare to manually reviewing commits?
 
 Manually reviewing commits is tedious, slow, and highly prone to human error, as it requires guessing which file might be broken and reading the code line-by-line. `git bisect`, on the other hand, operates on logarithmic time. It is mathematically much faster and relies entirely on testing the application's behavior rather than reading the code itself, saving hours of debugging time.
+
+## Issue #51 Advanced Git Commands & When to Use Them
+
+### What does each command do?
+
+- **`git checkout main -- <file>`**: Restores a specific file to its exact state on the `main` branch, completely discarding any local, uncommitted changes made to that specific file.
+- **`git cherry-pick <commit>`**: Takes a single, specific commit from one branch and applies it to your current working branch, without pulling in any of the other commits from that original branch.
+- **`git log`**: Displays the commit history of the repository, showing the sequence of changes, who made them, the timestamp, and their unique commit hashes.
+- **`git blame <file>`**: Annotates every single line in a file with the name of the author, the date, and the specific commit hash of the last person who modified that exact line.
+
+### When would you use it in a real project (hint: these are all really important in long running projects with multiple developers)?
+
+These commands are highly useful in a long-running project with multiple developers:
+
+- **`checkout`**: If I am experimenting with a complex component and the code gets too messy, I can instantly revert just that one file back to the clean, working version on `main` without losing the progress I've made in other files.
+- **`cherry-pick`**: If a teammate fixes a critical UI bug on a separate, unfinished feature branch, and I desperately need that fix to continue my own frontend work, I can "cherry-pick" just their bug-fix commit into my branch without merging their incomplete feature.
+- **`log`**: I would use this to understand how a feature evolved over time, or to find a specific older commit hash to use as a "good" boundary when hunting down a bug with `git bisect`.
+- **`blame`**: If I find a confusing line of code in the codebase, I can use `blame` to see exactly which teammate wrote it. This allows me to reach out to the right person directly for clarification instead of guessing or bothering the whole team.
+
+### What surprised you while testing these commands?
+
+I was most surprised by how "surgical" Git can be. Before this, I mostly thought of version control as just saving and loading the entire project at once. Seeing that I can selectively pluck a single commit from a different timeline (`cherry-pick`) showed me how much precise control professional developers have over a large codebase.
