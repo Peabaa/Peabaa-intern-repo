@@ -70,3 +70,17 @@ These commands are highly useful in a long-running project with multiple develop
 ### What surprised you while testing these commands?
 
 I was most surprised by how "surgical" Git can be. Before this, I mostly thought of version control as just saving and loading the entire project at once. Seeing that I can selectively pluck a single commit from a different timeline (`cherry-pick`) showed me how much precise control professional developers have over a large codebase.
+
+## Issue #52 Merge Conflicts & Conflict Resolution
+
+### What caused the conflict?
+
+The conflict happened because I edited the exact same line within the same file from both the main branch and conflict-test feature branch.
+
+### How did you resolve it?
+
+After entering the `git merge conflict-test` command, VS Code was able to show me the current change (main branch) and incoming change (conflict-test feature branch). I opened the conflicted file and was able to see four options: `Accept Current Change`, `Accept Incoming Change`, `Accept Both Changes`, or `Compare Changes`. I selected `Accept Current Change`, saved the file and committed it with the resolved merge conflict.
+
+### What did you learn?
+
+I learned that merge conflicts are not "errors" or signs that I broke the repository; they are actually a safety mechanism built into Git. As a Frontend Developer Intern, this will be crucial when I am working on the same UI components as my teammates, as it forces us to manually verify our code logic before it gets combined into the production branch.
