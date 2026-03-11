@@ -1,0 +1,22 @@
+name: Markdown Lint and Spell Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Markdown Linter
+        uses: DavidAnson/markdownlint-cli2-action@v14
+        with:
+          globs: "**/*.md"
+
+      - name: Spell Checker
+        uses: streetsidesoftware/cspell-action@v5
+        with:
+          files: "**/*.md"
