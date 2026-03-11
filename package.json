@@ -1,0 +1,25 @@
+{
+  "name": "peabaa-intern-repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Peabaa/Peabaa-intern-repo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Peabaa/Peabaa-intern-repo/issues"
+  },
+  "homepage": "https://github.com/Peabaa/Peabaa-intern-repo#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "markdownlint-cli": "^0.48.0"
+  }
+}
