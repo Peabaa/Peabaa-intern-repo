@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "prepare": "husky"
   },
   "repository": {
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Peabaa/Peabaa-intern-repo#readme",
   "devDependencies": {
     "husky": "^9.1.7",
+    "jest": "^30.3.0",
     "markdownlint-cli": "^0.48.0"
   }
 }
