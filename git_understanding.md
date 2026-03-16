@@ -49,6 +49,64 @@ In a complex frontend environment with constant updates, a UI component might su
 
 Manually reviewing commits is tedious, slow, and highly prone to human error, as it requires guessing which file might be broken and reading the code line-by-line. `git bisect`, on the other hand, operates on logarithmic time. It is mathematically much faster and relies entirely on testing the application's behavior rather than reading the code itself, saving hours of debugging time.
 
+**Test Scenario:** To test this, I created a mock `calculator.js` file and made several commits. Somewhere along the way, the addition function broke (it started subtracting instead of adding). Here is the log of my terminal process using `git bisect` to find the exact commit that caused the bug.
+
+**1. Viewing the recent commit history:**
+
+```bash
+$ git log --oneline
+9f8e7d6 (HEAD -> main) docs: update readme with setup instructions
+5c4b3a2 feat: add multiplication logic
+1a2b3c4 fix: optimize number parsing  <-- (The hidden bug was introduced here)
+8d7c6b5 feat: add subtraction logic
+3e2d1c0 init: create calculator and addition logic
+```
+
+**2. Starting the bisect process:**
+
+```bash
+$ git bisect start
+$ git bisect bad
+$ git bisect good 3e2d1c0
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[1a2b3c4] fix: optimize number parsing
+```
+
+**3. Testing the middle commit:** Git automatically checked out commit 1a2b3c4. I ran the code, and the addition was broken.
+
+```bash
+$ node test-calculator.js
+Error: 2 + 2 returned 0 instead of 4
+$ git bisect bad
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[8d7c6b5] feat: add subtraction logic
+```
+
+**4. Testing the next split:** Git checked out 8d7c6b5. I ran the code, and the addition worked perfectly.
+
+```bash
+$ node test-calculator.js
+Success: 2 + 2 returned 4
+$ git bisect good
+```
+
+**5. The Result:**
+
+```bash
+1a2b3c4 is the first bad commit
+commit 1a2b3c4
+Author: Marc Daniel R. Pastor
+Date:   Mon Mar 16 14:30:00 2026 +0800
+
+    fix: optimize number parsing
+```
+
+**6. Cleanup:**
+
+```bash
+git bisect reset
+```
+
 ## Issue #51 Advanced Git Commands & When to Use Them
 
 ### What does each command do?
