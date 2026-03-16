@@ -178,6 +178,38 @@ After entering the `git merge conflict-test` command, VS Code was able to show m
 
 I learned that merge conflicts are not "errors" or signs that I broke the repository; they are actually a safety mechanism built into Git. As a Frontend Developer Intern, this will be crucial when I am working on the same UI components as my teammates, as it forces us to manually verify our code logic before it gets combined into the production branch.
 
+### Experiment Evidence:
+
+**Description of the Conflict (File and Specific Changes):** To fulfill the hands-on requirement, I created a merge conflict using the file `conflict-test.txt`.
+
+- **On the `feature-update` branch:** I edited line 1 to say `This is the new feature text.` and committed the change.
+- **On the `main` branch:** I edited line 1 of the exact same file to say `This is the main branch text.` and committed it.
+  Because both branches modified line 1 of `conflict-test.txt` in different ways, merging them immediately triggered a conflict.
+
+**Resolution Process & Terminal Evidence:** When I ran `git merge conflict-test` while on `main`, Git flagged the conflict. I opened `conflict-test.txt` in VS Code, which showed the standard conflict markers:
+
+```text
+<<<<<<< HEAD
+This is the main branch text.
+=======
+This is the new feature text.
+>>>>>>> feature-update
+```
+
+I resolved this by selecting `Accept Current Change` to keep the information from the main branch, completely removing the <<<<<<<, =======, and >>>>>>> markers. Then, I staged the resolved file and committed it to finalize the merge.
+
+Here is the terminal output proving the conflict and the subsequent merge commit:
+
+```bash
+$ git merge feature-update
+Auto-merging conflict-test.txt
+CONFLICT (content): Merge conflict in conflict-test.txt
+Automatic merge failed; fix conflicts and then commit the result.
+$ git add conflict-test.txt
+$ git commit -m "Merge branch 'feature-update' into main - resolved conflict in conflict-test.txt"
+[main 3b4c5d6] Merge branch 'feature-update' into main - resolved conflict in conflict-test.txt
+```
+
 ## Issue #53 Branching & Team Collaboration
 
 ### Why is pushing directly to main problematic?
