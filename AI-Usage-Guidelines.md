@@ -16,11 +16,48 @@ It is best practice to not give any personally identifiable information of yours
 
 # Identify one task you can improve using an AI tool, and try it out.
 
+**Task:** Debugging a React component where the state was not updating the user interface correctly.
+**Context/Timestamp:** March 16, 2026, while practicing frontend component state management.
+**Prompt given to AI:** "Why isn't the counter updating on the screen when I click the button? It logs the right number in the console, but the UI is frozen. Here is my code:
+
+```javascript
+import { useState } from "react";
+
+export default function FocusTimer() {
+  let [minutes, setMinutes] = useState(0);
+
+  const addMinute = () => {
+    minutes = minutes + 1; // The console shows this working
+    console.log("Current minutes:", minutes);
+  };
+
+  return <button onClick={addMinute}>Focus Time: {minutes}m</button>;
+}
+```
+
+**AI Response Snippet:** "In React, you cannot directly reassign a state variable like `minutes = minutes + 1`. While this changes the underlying variable's value, it bypasses React's internal tracking, meaning React doesn't know it needs to re-render the UI to show the new number. You must use the specific setter function (`setMinutes`) provided by `useState`."
+
 Coding
 
 # Review the AI-generated output critically—did it require editing or fact-checking?
 
-It did require some editing. For simpler code, it seemed to do quite fine. But for more complex code, it needed some editing since it tends to be quite inefficient.
+For the specific task I had, it did well. The AI provided the correct conceptual explanation and suggested using `setMinutes(minutes + 1)`. I verified this by implementing the fix, and the React component immediately started re-rendering correctly with each click. It seems to do quite fine with simpler code. But for more complex code, I'm sure it would need some reviewing and editing since it may tend to be quite inefficient.
+
+**Final (Edited/Fixed) Code:**
+
+```javascript
+import { useState } from "react";
+
+export default function FocusTimer() {
+  const [minutes, setMinutes] = useState(0);
+
+  const addMinute = () => {
+    setMinutes(minutes + 1); // Fixed: Using the state setter function to trigger a re-render
+  };
+
+  return <button onClick={addMinute}>Focus Time: {minutes}m</button>;
+}
+```
 
 # Document one best practice you will follow when using AI tools at Focus Bear.
 
