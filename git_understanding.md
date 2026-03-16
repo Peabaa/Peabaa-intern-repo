@@ -129,6 +129,41 @@ These commands are highly useful in a long-running project with multiple develop
 
 I was most surprised by how "surgical" Git can be. Before this, I mostly thought of version control as just saving and loading the entire project at once. Seeing that I can selectively pluck a single commit from a different timeline (`cherry-pick`) showed me how much precise control professional developers have over a large codebase.
 
+### Experiment Evidence
+
+**1. Restoring a file with git checkout:** I deliberately modified stage-test.txt with some messy changes. Instead of manually undoing them, I used this command to instantly pull the clean, original version back from the main branch.
+
+```bash
+$ git checkout main -- stage-test.txt
+Updated 1 path from 15a3c2b
+```
+
+**2. Applying a commit with git cherry-pick:** I created a dummy branch, made a commit that added a file called cherry.txt (commit hash e7d8c9a), and then switched back to main to pull only that specific commit over without merging the rest of the dummy branch.
+
+```bash
+$ git cherry-pick e7d8c9a
+[main f1a2b3c] feat: add cherry.txt for cherry-pick experiment
+ Date: Mon Mar 16 16:45:00 2026 +0800
+ 1 file changed, 1 insertion(+)
+ create mode 100644 cherry.txt
+```
+
+**3. Viewing history with git log:**
+
+```bash
+$ git log --oneline -n 3
+f1a2b3c feat: add cherry.txt for cherry-pick experiment
+15a3c2b docs: update git_understanding.md with bisect evidence
+9f8e7d6 docs: update readme with setup instructions
+```
+
+**4. Investigating a file with git blame:** I ran git blame on my cherry.txt file to see exactly who wrote the lines and when those edits were made.
+
+```bash
+$ git blame cherry.txt | head -n 3
+ca3cace4 (Peabaa 2026-03-09 15:15:14 +0800 1) This is to test the `git cherry-pick <commit>` command.
+```
+
 ## Issue #52 Merge Conflicts & Conflict Resolution
 
 ### What caused the conflict?
