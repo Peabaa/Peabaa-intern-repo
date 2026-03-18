@@ -126,3 +126,44 @@ The deep nesting created high cognitive load and required the reader to really t
 ### How did refactoring improve it?
 
 By using guard clauses, the logic was flattened. It isolates the failure states at the top of the function, meaning the main purpose of the code isn't buried inside three layers of brackets. It is much easier to scan and understand quickly.
+
+## Issue #43 Avoiding Code Duplication
+
+### Duplicated Code Example
+
+```javascript
+function calculateStandardShipping(cartTotal) {
+  const tax = cartTotal * 0.12; // 12% tax
+  const totalWithTax = cartTotal + tax;
+  return totalWithTax + 5.0; // $5.00 standard fee
+}
+
+function calculateExpressShipping(cartTotal) {
+  const tax = cartTotal * 0.12; // 12% tax
+  const totalWithTax = cartTotal + tax;
+  return totalWithTax + 15.0; // $15.00 express fee
+}
+```
+
+### Refactored Code: We can extract the repeated logic into a single, reusable function that accepts the shipping fee as a parameter.
+
+```javascript
+function calculateTotalWithShipping(cartTotal, shippingFee) {
+  const taxRate = 0.12;
+  const totalWithTax = cartTotal + cartTotal * taxRate;
+
+  return totalWithTax + shippingFee;
+}
+
+// Now you just call the single function with different arguments:
+// calculateTotalWithShipping(50, 5.00);  // For Standard
+// calculateTotalWithShipping(50, 15.00); // For Express
+```
+
+### What were the issues with duplicated code?
+
+If a business rule changes (like a tax rate increasing), you have to hunt down every instance of that copied code to update it. If you miss even one, you introduce a bug. Additionally, it clutters the file and makes it harder for other developers to figure out what the code is actually doing.
+
+### How did refactoring improve maintainability?
+
+By extracting the logic into one reusable function, there is only one place to update the code if requirements change. You only have to write unit tests for one function instead of testing the same logic across five different duplicated functions.
