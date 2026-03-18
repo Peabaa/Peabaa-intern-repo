@@ -83,13 +83,13 @@ function processPurchase(user, item) {
         user.balance -= item.price;
         success = true;
       } else {
-        console.log("Insufficient funds");
+        console.log('Insufficient funds');
       }
     } else {
-      console.log("User not verified");
+      console.log('User not verified');
     }
   } else {
-    console.log("User does not exist");
+    console.log('User does not exist');
   }
   return success;
 }
@@ -100,17 +100,17 @@ function processPurchase(user, item) {
 ```javascript
 function processPurchase(user, item) {
   if (!user) {
-    console.log("User does not exist");
+    console.log('User does not exist');
     return false;
   }
 
   if (!user.isVerified) {
-    console.log("User not verified");
+    console.log('User not verified');
     return false;
   }
 
   if (user.balance < item.price) {
-    console.log("Insufficient funds");
+    console.log('Insufficient funds');
     return false;
   }
 
@@ -176,7 +176,7 @@ By extracting the logic into one reusable function, there is only one place to u
 function submitOrder(order, user) {
   // 1. Validate the order
   if (!order.items || order.items.length === 0) {
-    console.log("Order is empty");
+    console.log('Order is empty');
     return false;
   }
 
@@ -294,3 +294,39 @@ Poor names increase the "cognitive load" required to read the code. You waste ti
 ### How did refactoring improve code readability?
 
 It removed the need for comments. By using descriptive names, the code explains itself, making it much easier to scan, debug, and maintain months down the line.
+
+## Issue #46 Code Formatting & Style Guides
+
+### Unformatted Code Example
+
+```javascript
+let greeting = 'Hello World';
+function sayHi(name) {
+  console.log(greeting + name);
+}
+```
+
+### Formatted Code Example: Used ESLint and Prettier with the Airbnb style guide
+
+```javascript
+const greeting = 'Hello World';
+
+function sayHi(name) {
+  console.log(greeting + name);
+}
+```
+
+### Why is code formatting important?
+
+Consistent code formatting reduces cognitive load and mind games. When an entire codebase follows a strict standard (like the Airbnb Style Guide), developers don't have to waste time deciphering different indentation styles, quote marks, or spacing. It allows the team to focus purely on the logic and makes catching bugs much easier.
+
+### What issues did the linter detect?
+
+- **`quotes`:** Replaced several instances of double quotes (`""`) with single quotes (`''`) to match the Airbnb standard.
+- **`semi`:** Added missing semicolons at the end of multiple statements.
+- **`prefer-const`:** Changed variables declared with `let` to `const` because they were never actually reassigned after their initial declaration.
+- **`indent`:** Fixed inconsistent spacing (e.g., changing 4 spaces to 2 spaces).
+
+### Did formatting the code make it easier to read?
+
+Yes. The standardized spacing makes the block scope (what is inside the function versus outside) instantly clear. Changing let to const also gives me immediate confidence that the greeting variable won't be accidentally changed somewhere else in the file.
