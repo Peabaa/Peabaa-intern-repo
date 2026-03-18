@@ -69,3 +69,60 @@ Comments are less needed when:
 - the comment is just translating basic syntax
 - compensating for terrible variable or function naming (instead of explaining the name of the function using comments, just change the name itself)
 - explaining a massive 200-line function, when you can extract parts of that code into smaller, well-named helper functions.
+
+## Issue #42 Refactoring Code for Simplicity
+
+### Complicated Code Example
+
+```javascript
+function processPurchase(user, item) {
+  let success = false;
+  if (user !== null) {
+    if (user.isVerified) {
+      if (user.balance >= item.price) {
+        user.balance -= item.price;
+        success = true;
+      } else {
+        console.log("Insufficient funds");
+      }
+    } else {
+      console.log("User not verified");
+    }
+  } else {
+    console.log("User does not exist");
+  }
+  return success;
+}
+```
+
+### Refactored Code Example
+
+```javascript
+function processPurchase(user, item) {
+  if (!user) {
+    console.log("User does not exist");
+    return false;
+  }
+
+  if (!user.isVerified) {
+    console.log("User not verified");
+    return false;
+  }
+
+  if (user.balance < item.price) {
+    console.log("Insufficient funds");
+    return false;
+  }
+
+  user.balance -= item.price;
+  return true;
+}
+```
+
+### What made the original code complex?
+
+The deep nesting created high cognitive load and required the reader to really think. You have to read through layers of conditions just to figure out what the function actually does, and it's hard to track which else belongs to which if.
+
+### How did refactoring improve it?
+
+By using guard clauses, the logic was flattened. It isolates the failure states at the top of the function, meaning the main purpose of the code isn't buried inside three layers of brackets. It is much easier to scan and understand quickly.
