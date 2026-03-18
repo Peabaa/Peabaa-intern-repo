@@ -19,3 +19,53 @@ The original code suffered from deeply nested `if/else` statements, making the c
 ### How does handling errors improve reliability?
 
 Implementing Guard Clauses forces the function to evaluate edge cases upfront. By immediately rejecting invalid inputs (like `undefined` objects or missing arrays), the application is protected from crashing further down the execution line with errors like "Cannot read properties of undefined". This proactive error handling fails gracefully, returning clear, predictable messages rather than breaking the entire UI, ensuring a much more stable and reliable experience for the end user.
+
+## Issue #41 Commenting & Documentation
+
+### Poorly Commented Code:
+
+```javascript
+// Function to get the total
+function calc(a, b) {
+  // check if b is greater than 0
+  if (b > 0) {
+    // multiply a and b
+    let d = a * b;
+    // subtract d from a
+    return a - d;
+  }
+  // return a
+  return a;
+}
+```
+
+### Improved Code: Used the JSDoc comment format
+
+```javascript
+/**
+ * Calculates the final price of an item after applying a discount.
+ * @param {number} basePrice - The original price of the item.
+ * @param {number} discountRate - The discount percentage as a decimal (e.g., 0.20 for 20%).
+ * @returns {number} The final calculated price.
+ */
+function calculateDiscountedPrice(basePrice, discountRate) {
+  if (discountRate > 0) {
+    const discountAmount = basePrice * discountRate;
+    return basePrice - discountAmount;
+  }
+
+  return basePrice;
+}
+```
+
+### When should you add comments?
+
+Comments are good when dealing with complex or non-intuitive business logic that cannot be simplified. Aside from that, it can be helpful for explaining regular expressions (RegEx), which are notoriously hard to read. Additionally when documenting public APIs, functions, or classes, comments are helpful so other developers know what inputs are expected and what outputs are returned as well as leave warnings for future developers.
+
+### When should you avoid comments and instead improve the code?
+
+Comments are less needed when:
+
+- the comment is just translating basic syntax
+- compensating for terrible variable or function naming (instead of explaining the name of the function using comments, just change the name itself)
+- explaining a massive 200-line function, when you can extract parts of that code into smaller, well-named helper functions.
