@@ -244,3 +244,53 @@ Using the example above as a reference, you can now use calculateOrderTotal() or
 ### How did refactoring improve the structure of the code?
 
 It makes the code self-documenting. You don't need comments explaining what block of code does what because the descriptive function names tell you exactly what is happening step-by-step.
+
+## Issue #45 Naming Variables & Functions
+
+### Unclear Variable Names Example
+
+```javascript
+function chk(a, u) {
+  let r = false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].sId === u && a[i].st === 1) {
+      r = true;
+    }
+  }
+  return r;
+}
+```
+
+### Refactored Code: By simply giving the variables meaningful names and pulling that "magic number" out into a constant, the logic suddenly reads like plain English.
+
+```javascript
+function isStudentPresent(attendanceRecords, studentId) {
+  const STATUS_PRESENT = 1;
+  let isPresent = false;
+
+  for (let i = 0; i < attendanceRecords.length; i++) {
+    const currentRecord = attendanceRecords[i];
+
+    if (
+      currentRecord.studentId === studentId &&
+      currentRecord.status === STATUS_PRESENT
+    ) {
+      isPresent = true;
+    }
+  }
+
+  return isPresent;
+}
+```
+
+### What makes a good variable or function name?
+
+A good name is highly descriptive and unambiguous. Functions should usually start with a strong verb, like get, set, calculate, and fetch, because they represent actions, while variables should be nouns representing the data they hold.
+
+### What issues can arise from poorly named variables?
+
+Poor names increase the "cognitive load" required to read the code. You waste time trying to decipher what data2 or temp means. It also makes onboarding new developers much slower and increases the risk of bugs because someone might misunderstand what a function actually does.
+
+### How did refactoring improve code readability?
+
+It removed the need for comments. By using descriptive names, the code explains itself, making it much easier to scan, debug, and maintain months down the line.
