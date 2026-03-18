@@ -167,3 +167,80 @@ If a business rule changes (like a tax rate increasing), you have to hunt down e
 ### How did refactoring improve maintainability?
 
 By extracting the logic into one reusable function, there is only one place to update the code if requirements change. You only have to write unit tests for one function instead of testing the same logic across five different duplicated functions.
+
+## Issue #44 Writing Small, Focused Functions
+
+### Long, Complex Function Example
+
+```javascript
+function submitOrder(order, user) {
+  // 1. Validate the order
+  if (!order.items || order.items.length === 0) {
+    console.log("Order is empty");
+    return false;
+  }
+
+  // 2. Calculate the total
+  let totalAmount = 0;
+  for (let i = 0; i < order.items.length; i++) {
+    totalAmount += order.items[i].price * order.items[i].quantity;
+  }
+
+  // 3. Process the payment
+  console.log(`Charging $${totalAmount} to ${user.paymentMethod}...`);
+  let paymentSuccessful = true; // Simulated payment
+
+  // 4. Send Confirmation
+  if (paymentSuccessful) {
+    console.log(`Emailing receipt to ${user.email}`);
+    return true;
+  } else {
+    return false;
+  }
+}
+```
+
+### Refactored Code: extracting the logic into smaller helper functions, the main submitOrder function now acts like a table of contents.
+
+```javascript
+// The main function is now extremely clean and easy to read
+function submitOrder(order, user) {
+  if (!isValidOrder(order)) return false;
+
+  const totalAmount = calculateOrderTotal(order.items);
+  const paymentSuccessful = processPayment(user, totalAmount);
+
+  if (paymentSuccessful) {
+    sendReceiptEmail(user);
+    return true;
+  }
+  return false;
+}
+
+// Small, focused helper functions
+
+function isValidOrder(order) {
+  return order.items && order.items.length > 0;
+}
+
+function calculateOrderTotal(items) {
+  return items.reduce((total, item) => total + item.price * item.quantity, 0);
+}
+
+function processPayment(user, amount) {
+  console.log(`Charging $${amount} to ${user.paymentMethod}...`);
+  return true;
+}
+
+function sendReceiptEmail(user) {
+  console.log(`Emailing receipt to ${user.email}`);
+}
+```
+
+### Why is breaking down functions beneficial?
+
+Using the example above as a reference, you can now use calculateOrderTotal() or isValidOrder() anywhere else in your application without having to trigger a payment or an email. You can write a unit test specifically for the math in calculateOrderTotal() without needing to mock up a fake payment gateway.
+
+### How did refactoring improve the structure of the code?
+
+It makes the code self-documenting. You don't need comments explaining what block of code does what because the descriptive function names tell you exactly what is happening step-by-step.
