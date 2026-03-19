@@ -330,3 +330,79 @@ Consistent code formatting reduces cognitive load and mind games. When an entire
 ### Did formatting the code make it easier to read?
 
 Yes. The standardized spacing makes the block scope (what is inside the function versus outside) instantly clear. Changing let to const also gives me immediate confidence that the greeting variable won't be accidentally changed somewhere else in the file.
+
+## Issue #47 Understanding Clean Code Principles
+
+### Simplicity – Keep code as simple as possible.
+
+Code should do exactly what it needs to do and nothing more. Avoid "over-engineering" or adding complex abstractions for future features that might never happen. The simpler the code, the fewer places bugs can hide.
+
+### Readability – Code should be easy to understand.
+
+Code is written for humans first and machines second. It should read like well-written prose. Meaningful variable names, clear logic flow, and proper indentation are essential because developers spend vastly more time reading old code than writing new code.
+
+### Maintainability – Future developers (including you!) should be able to work with the code easily.
+
+Code shouldn't be as fragile as a house of cards. Future developers should be able to safely jump in, fix a bug, or add a feature without breaking three other unrelated parts of the application.
+
+### Consistency – Follow style guides and project conventions.
+
+A codebase should look like it was written by a single person, even if a team of twenty worked on it. Sticking to established style guides and naming conventions reduces cognitive load.
+
+### Efficiency – Write performant, optimized code without premature over-engineering.
+
+Code should be performant, but not at the cost of readability. Write clean, solid logic first. Only optimize specific functions for speed or memory after you have proven they are causing a bottleneck (avoiding "premature optimization").
+
+### Messy Code Example
+
+```javascript
+function process(d) {
+  let res = [];
+  for (let i = 0; i < d.length; i++) {
+    if (d[i].status == 'active') {
+      let t = 0;
+      for (let j = 0; j < d[i].scores.length; j++) {
+        t += d[i].scores[j];
+      }
+      if (t > 50) {
+        res.push({ n: d[i].name, s: t });
+      }
+    }
+  }
+  return res;
+}
+```
+
+- **Terrible Naming:** d, t, res, n, and s give zero context about what data is being handled.
+- **Deep Nesting:** The classic "Arrow Anti-Pattern." You have to hold three layers of loops and if statements in your head just to understand the core logic.
+- **Magic Numbers:** What does 50 mean? It's unexplained.
+- **Does Too Much:** It's filtering active users, calculating math, and formatting a new object all inside one monolithic block.
+
+### Clean Code Example
+
+```javascript
+const PASSING_SCORE_THRESHOLD = 50;
+
+function getPassingActiveUsers(users) {
+  const activeUsers = users.filter((user) => user.status === 'active');
+  const passingUsers = [];
+
+  for (const user of activeUsers) {
+    const totalScore = calculateTotalScore(user.scores);
+
+    if (totalScore > PASSING_SCORE_THRESHOLD) {
+      passingUsers.push({
+        name: user.name,
+        totalScore: totalScore,
+      });
+    }
+  }
+
+  return passingUsers;
+}
+
+// Extracted helper function for the math
+function calculateTotalScore(scores) {
+  return scores.reduce((total, currentScore) => total + currentScore, 0);
+}
+```
