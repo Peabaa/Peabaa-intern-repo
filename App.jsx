@@ -2,6 +2,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './i18n'; // Import the configuration file we just created
+import RegistrationForm from './RegistrationForm.jsx';
 
 export default function App() {
   // Use the hook to get the 't' (translate) function and the 'i18n' instance
