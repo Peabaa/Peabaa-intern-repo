@@ -164,3 +164,112 @@ You should avoid using `useMemo` for fast, simple calculations (like basic addit
 ### What happens if you remove useMemo from your implementation?
 
 If `useMemo` is removed from the component, the expensive calculation (like a loop of 50,000,000) will execute from scratch on every single render. This means if a user interacts with an entirely unrelated piece of state, like clicking the "Toggle Theme" button to change the background color, the whole app will freeze and stutter for a moment while it unnecessarily reprocesses the massive array.
+
+## Issue #25 Understanding React Hooks: useEffect
+
+### **UseEffectExample.jsx**
+
+```jsx
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+
+import React, { useState, useEffect } from 'react';
+
+export default function UseEffectExample() {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [trigger, setTrigger] = useState(0);
+
+  // EFFECT 1: Mount, Unmount, and Cleanup
+  useEffect(() => {
+    // This runs exactly once when the component first appears on screen
+    console.log('Component MOUNTED!');
+
+    // set up a side effect (timer)
+    const timer = setInterval(() => {
+      console.log('Timer ticking...');
+    }, 5000);
+
+    // CLEANUP FUNCTION: React runs this right before the component is destroyed
+    // If we didn't clear this interval, it would run forever in the background and cause a memory leak
+    return () => {
+      console.log('Cleanup running: Component UNMOUNTED!');
+      clearInterval(timer);
+    };
+  }, []); // The empty dependency array means "only run on mount/unmount"
+
+  // EFFECT 2: Fetching Data triggered by a state change
+  useEffect(() => {
+    // skip the initial render when trigger is 0
+    if (trigger === 0) return;
+
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetching dummy data from a free public API
+        const response = await fetch(
+          'https://jsonplaceholder.typicode.com/posts/1',
+        );
+        const result = await response.json();
+        setData(result);
+        console.log('Data fetched successfully!');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [trigger]); // This effect ONLY runs when the 'trigger' state changes
+
+  return (
+    <div
+      style={{ padding: '20px', border: '2px solid purple', maxWidth: '500px' }}
+    >
+      <h2>useEffect Demo</h2>
+
+      {/* Clicking this changes the 'trigger' state, which alerts the second useEffect to run */}
+      <button
+        type="button"
+        onClick={() => setTrigger((prev) => prev + 1)}
+        disabled={isLoading}
+      >
+        {isLoading ? 'Fetching...' : 'Fetch Data API'}
+      </button>
+
+      {data && (
+        <div
+          style={{
+            marginTop: '15px',
+            padding: '10px',
+            background: '#333',
+            color: 'white',
+          }}
+        >
+          <strong>{data.title}</strong>
+          <p>{data.body}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+### When should you use useEffect instead of handling logic inside event handlers?
+
+You should use event handlers (like `onClick` or `onSubmit`) for logic that is triggered directly by a **user action**, such as purchasing an item or submitting a form.
+
+You should use `useEffect` when you need to **synchronize** your component with an external system (like a database, an API, or a browser API) based on the component's lifecycle or state changes. For example, use `useEffect` to connect to a chat server as soon as the component appears on the screen, or to save a draft automatically whenever a text input state changes.
+
+### What happens if you don’t provide a dependency array?
+
+If you completely omit the dependency array (e.g., writing `useEffect(() => { ... })` instead of `useEffect(() => { ... }, [])`), React will run the effect after **every single render**.
+
+If your effect happens to update a state variable, updating that state will trigger a re-render. That re-render will trigger the effect again, which updates the state again, instantly creating an infinite loop that will freeze or crash the user's browser.
+
+### How can improper use of useEffect cause performance issues?
+
+- **Infinite Loops:** As mentioned above, updating state inside an effect without a proper dependency array will lock up the browser.
+- **Memory Leaks:** If you set up continuous background processes (like `setInterval` timers or window event listeners) inside an effect but fail to return a cleanup function (e.g., `clearInterval`), those processes will keep running invisibly even after the component is removed from the screen, eventually eating up the device's RAM.
+- **Over-fetching:** Placing too many variables in the dependency array (or passing variables whose memory addresses change on every render, like un-memoized functions or objects) can cause the effect to run far more often than necessary, wasting network bandwidth and making the app stutter.
