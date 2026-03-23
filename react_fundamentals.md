@@ -219,3 +219,70 @@ export default function ListExample() {
 - **Using Array Indexes as Keys:** While using the loop `index` (0, 1, 2) is a quick fix to make the warning go away, it can cause severe UI bugs if the list order ever changes (like if a user deletes an item in the middle or sorts the list alphabetically). It is always safer to use a unique ID from a database or a library like `uuid`.
 
 - **Mutating the Array Directly:** A very common beginner mistake is using standard JavaScript array methods like `items.push(newItem)`. This directly modifies the existing array in memory, so React doesn't realize the state has changed and will not trigger a re-render. You must always create a new array copy using the spread operator: `setItems([...items, newItem])`.
+
+## Issue #30 Styling with Tailwind CSS
+
+### **Button.jsx**
+
+```jsx
+/* eslint-disable no-unused-vars */
+
+import React from 'react';
+
+export default function Button({ onClick, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="bg-blue-600 hover:bg-blue-500 active:bg-blue-800 text-white font-bold py-2 px-6 rounded-md shadow-sm transition-colors duration-200"
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+### **Counter.jsx**
+
+```jsx
+/* eslint-disable no-unused-vars */
+
+import React, { useState } from 'react';
+import Button from './Button.jsx';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    // Tailwind classes for a centered card with a border and shadow
+    <div className="max-w-sm mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-200 flex flex-col items-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-800">Counter</h2>
+
+      {/* Dynamic text color based on the number! */}
+      <p
+        className={`text-5xl font-black ${count < 0 ? 'text-red-500' : 'text-green-500'}`}
+      >
+        {count}
+      </p>
+
+      {/* Flexbox container to space out the buttons */}
+      <div className="flex space-x-4 w-full justify-center mt-4">
+        <Button onClick={() => setCount((prev) => prev - 1)}>Decrease</Button>
+        <Button onClick={() => setCount((prev) => prev + 1)}>Increase</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### What are the advantages of using Tailwind CSS?
+
+- **Speed and Context:** You never have to leave your `.jsx` file to switch back and forth with a separate `.css` file. You style exactly where you write your structure.
+- **Built-in Design System:** Instead of guessing pixel values or hex codes, you use a constrained, professional set of sizes, spacing, and colors (e.g., `p-4`, `text-gray-800`), which keeps the UI extremely consistent.
+- **Automatic Optimization:** When you build your project for production, Tailwind automatically purges any classes you didn't actually use, resulting in an incredibly tiny CSS file.
+
+### What are some potential pitfalls?
+
+- **HTML Clutter:** Elements can easily end up with 15+ utility classes attached to them, making the code look messy and hard to read at a glance (often referred to as "class soup").
+- **Steep Learning Curve:** You have to invest time into learning and memorizing Tailwind's specific class names (like `flex-col` instead of standard CSS `flex-direction: column`).
+- **Abstraction Requirement:** To avoid duplicating massive strings of classes everywhere, you are forced to extract UI elements into reusable React components (like a custom Button) early on.

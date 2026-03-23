@@ -6,6 +6,7 @@ import './i18n'; // Import the configuration file
 import RegistrationForm from './RegistrationForm.jsx'; // Kept your existing import
 import Home from './Home.jsx'; // Import the new Home page
 import Profile from './Profile.jsx'; // Import the new Profile page
+import Counter from './Counter.jsx'; // Import the Counter component
 
 export default function App() {
   // Use the hook to get the 't' (translate) function and the 'i18n' instance
@@ -34,6 +35,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/counter" element={<Counter />} />
           </Routes>
         </div>
 
