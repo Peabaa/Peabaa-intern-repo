@@ -133,3 +133,89 @@ export default function App() {
 - **State Preservation:** When you navigate using client-side routing, the JavaScript application remains running in the background. This means any active state, like a partially filled-out form, an open chat window, or a playing audio track, is completely preserved when you click a link to view another component. A traditional server-side route change would wipe all of that data out.
 
 - **Reduced Server Load:** Instead of the server having to process and build a full HTML document for every single click, it only has to send the initial bundle of code once. After that, the server only needs to send lightweight raw data (like JSON from an API) when requested, saving bandwidth and processing power.
+
+## Issue #29 Working with Lists & User Input
+
+### **ListExample.jsx**
+
+```jsx
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
+
+export default function ListExample() {
+  // State 1: The current text inside the input box
+  const [inputValue, setInputValue] = useState('');
+
+  // State 2: The actual list of items (starting with a few defaults)
+  const [items, setItems] = useState([
+    'High-airflow Mesh Panel',
+    'AIO Liquid Cooler',
+  ]);
+
+  // This function runs when the form is submitted
+  const handleAddItem = (e) => {
+    e.preventDefault(); // Stop the page from refreshing!
+
+    // Don't add empty blank spaces to the list
+    if (inputValue.trim() === '') return;
+
+    // We use the updater function to guarantee we have the latest list.
+    // The [...prevItems] syntax creates a brand new array, copies the old stuff into it, and tacks the new item onto the end.
+    setItems((prevItems) => [...prevItems, inputValue]);
+
+    // Clear the input box so the user can type the next item
+    setInputValue('');
+  };
+
+  return (
+    <div
+      style={{
+        padding: '20px',
+        border: '2px solid #ff5722',
+        maxWidth: '400px',
+        margin: '20px',
+      }}
+    >
+      <h2>🛒 PC Build Wishlist</h2>
+
+      {/* The Form */}
+      <form onSubmit={handleAddItem} style={{ marginBottom: '20px' }}>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="e.g., 1000W PSU..."
+          style={{ padding: '8px', width: '70%', marginRight: '5px' }}
+        />
+        <button type="submit" style={{ padding: '8px 12px' }}>
+          Add
+        </button>
+      </form>
+
+      {/* The List display using .map() */}
+      <ul style={{ textAlign: 'left' }}>
+        {items.map((item, index) => (
+          // React strictly requires a unique 'key' prop on every mapped element
+          // Using index is okay for simple, non-reorderable lists like this one
+          <li key={index} style={{ marginBottom: '8px' }}>
+            {item}
+          </li>
+        ))}
+      </ul>
+
+      {/* Just to show the array length dynamically */}
+      <p style={{ fontSize: '0.8em', color: 'gray' }}>
+        Total items: {items.length}
+      </p>
+    </div>
+  );
+}
+```
+
+### What are some common issues when working with lists in React?
+
+- **Forgetting the `key` prop:** When using `.map()` to render a list, React requires a unique `key` on the top-level element of each item (e.g., `<li key={id}>`). Without this, React cannot efficiently track which items were added, changed, or removed, leading to massive performance hits and console warnings.
+
+- **Using Array Indexes as Keys:** While using the loop `index` (0, 1, 2) is a quick fix to make the warning go away, it can cause severe UI bugs if the list order ever changes (like if a user deletes an item in the middle or sorts the list alphabetically). It is always safer to use a unique ID from a database or a library like `uuid`.
+
+- **Mutating the Array Directly:** A very common beginner mistake is using standard JavaScript array methods like `items.push(newItem)`. This directly modifies the existing array in memory, so React doesn't realize the state has changed and will not trigger a re-render. You must always create a new array copy using the spread operator: `setItems([...items, newItem])`.
