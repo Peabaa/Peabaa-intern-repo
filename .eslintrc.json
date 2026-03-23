@@ -11,5 +11,15 @@
     "ecmaFeatures": {
       "jsx": true
     }
+  },
+  "rules": {
+    "import/no-unresolved": [
+      "error",
+      { "ignore": ["^vite$", "^@vitejs/plugin-react$"] }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["vite.config.js"] }
+    ]
   }
 }
