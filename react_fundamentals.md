@@ -286,3 +286,42 @@ export default function Counter() {
 - **HTML Clutter:** Elements can easily end up with 15+ utility classes attached to them, making the code look messy and hard to read at a glance (often referred to as "class soup").
 - **Steep Learning Curve:** You have to invest time into learning and memorizing Tailwind's specific class names (like `flex-col` instead of standard CSS `flex-direction: column`).
 - **Abstraction Requirement:** To avoid duplicating massive strings of classes everywhere, you are forced to extract UI elements into reusable React components (like a custom Button) early on.
+
+## Issue #31 Handling State & User Input
+
+### **Counter.jsx:** Example for Issue #31
+
+```jsx
+/* eslint-disable no-unused-vars */
+
+import React, { useState } from 'react';
+import Button from './Button.jsx';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    // Tailwind classes for a centered card with a border and shadow
+    <div className="max-w-sm mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-200 flex flex-col items-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-800">Counter</h2>
+
+      {/* Dynamic text color based on the number! */}
+      <p
+        className={`text-5xl font-black ${count < 0 ? 'text-red-500' : 'text-green-500'}`}
+      >
+        {count}
+      </p>
+
+      {/* Flexbox container to space out the buttons */}
+      <div className="flex space-x-4 w-full justify-center mt-4">
+        <Button onClick={() => setCount((prev) => prev - 1)}>Decrease</Button>
+        <Button onClick={() => setCount((prev) => prev + 1)}>Increase</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### What happens if we modify state directly instead of using setState?
+
+If you modify a state variable directly (for example, writing `count = count + 1`), the value will actually update in the computer's background memory, but **the UI will not change**. React relies on the setter function (like `setCount`) to act as a flare gun. When you use the setter function, it updates the data and fires off a signal telling React, the data changed.and it needs to redraw this component on the screen right now. If you bypass the setter function by mutating the state directly, React never sees the flare, so it never triggers a re-render, leaving your user looking at stale, outdated information on the screen.
