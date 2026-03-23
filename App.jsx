@@ -7,6 +7,7 @@ import RegistrationForm from './RegistrationForm.jsx'; // Kept your existing imp
 import Home from './Home.jsx'; // Import the new Home page
 import Profile from './Profile.jsx'; // Import the new Profile page
 import Counter from './Counter.jsx'; // Import the Counter component
+import HelloWorld from './HelloWorld.jsx';
 
 export default function App() {
   // Use the hook to get the 't' (translate) function and the 'i18n' instance
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/counter" element={<Counter />} />
+            <Route path="/hello" element={<HelloWorld name="Focus Bear" />} />
           </Routes>
         </div>
 
