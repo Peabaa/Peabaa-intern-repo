@@ -20,7 +20,7 @@
     ],
     "import/no-extraneous-dependencies": [
       "error",
-      { "devDependencies": ["vite.config.js"] }
+      { "devDependencies": ["vite.config.js", "**/*.test.js", "**/*.test.jsx"] }
     ],
     "no-param-reassign": [
       "error",
