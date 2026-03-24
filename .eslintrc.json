@@ -1,5 +1,11 @@
 {
-  "extends": ["airbnb-base", "prettier"],
+  "extends": [
+    "airbnb-base",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "prettier"
+  ],
+  "plugins": ["react"],
   "env": {
     "node": true,
     "browser": true,
@@ -11,6 +17,11 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   },
   "rules": {
@@ -25,6 +36,7 @@
     "no-param-reassign": [
       "error",
       { "props": true, "ignorePropertyModificationsFor": ["state"] }
-    ]
+    ],
+    "react/prop-types": "off"
   }
 }

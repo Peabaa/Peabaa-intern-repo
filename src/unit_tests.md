@@ -265,3 +265,75 @@ Mocking API calls is critical because unit tests should be fast, isolated, and h
 ### What are some common pitfalls when testing asynchronous code?
 
 The most common pitfall is forgetting that asynchronous network operations take time to resolve. If you run a standard `expect` assertion immediately after rendering a component that fetches data, the test will automatically fail because the data hasn't arrived in the DOM yet. You must always use asynchronous testing utilities like `await waitFor()` or `findByText()` to pause the test until the component has actually updated with the new state.
+
+## Issue #19 Testing React Components with Jest & React Testing Library
+
+### **HelloWorld.jsx**
+
+```jsx
+/* eslint-disable no-unused-vars */
+
+import React from 'react';
+
+// The { name } inside the parentheses is exactly how we "catch" the prop
+export default function HelloWorld({ name }) {
+  return (
+    <div className="p-6 bg-white rounded-xl shadow-md border border-gray-200 text-center max-w-sm mx-auto mt-6">
+      <h2 className="text-2xl font-bold text-gray-800">
+        {/* We use curly braces to dynamically insert the JavaScript variable */}
+        Hello, {name}!
+      </h2>
+    </div>
+  );
+}
+```
+
+### **HelloWorld.test.jsx**
+
+```jsx
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import HelloWorld from './HelloWorld.jsx';
+
+describe('HelloWorld Component', () => {
+  it('renders the correct greeting message dynamically', () => {
+    // 1. Render the component and pass it a fake prop
+    render(<HelloWorld name="Testing Bear" />);
+
+    // 2. Search the virtual DOM for the exact text we expect to see
+    const messageElement = screen.getByText('Hello, Testing Bear!');
+
+    // 3. Assert that the text successfully made it onto the screen
+    expect(messageElement).toBeInTheDocument();
+  });
+});
+```
+
+### **Jest Test Result: Issue #19**
+
+```bash
+$ npm test
+
+> peabaa-intern-repo@1.0.0 test
+> jest
+
+ PASS  src/HelloWorld.test.jsx
+ PASS  src/UserList.test.jsx
+ PASS  src/RegistrationForm.test.jsx
+ PASS  src/counterSlice.test.js
+ PASS  ./salaryCalculator.test.js
+
+Test Suites: 5 passed, 5 total
+Tests:       17 passed, 17 total
+Snapshots:   0 total
+Time:        2.232 s
+Ran all test suites.
+```
+
+### What are the benefits of using React Testing Library instead of testing implementation details?
+
+React Testing Library (RTL) forces you to test your components exactly how a user would interact with them. Instead of checking if an internal JavaScript variable changed or if a specific hook was called, you check if the actual text or button appeared on the screen. This makes tests highly resilient; you can completely rewrite the underlying code (refactoring), and as long as the visual output remains the same for the user, your tests will still confidently pass!
+
+### What challenges did you encounter when simulating user interaction?
+
+When simulating user interactions (like typing in a form or clicking a button), the biggest challenge is dealing with asynchronous updates and React's rendering cycle. Because React takes a fraction of a millisecond to redraw the screen after a click, running an assertion immediately after firing an event can cause the test to fail. You have to remember to use asynchronous tools like `await waitFor()` or `findBy...` queries to pause the test just long enough for the UI to catch up with the interaction.
