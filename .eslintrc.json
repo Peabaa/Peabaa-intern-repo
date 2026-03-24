@@ -3,7 +3,8 @@
   "env": {
     "node": true,
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest": true
   },
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -20,6 +21,10 @@
     "import/no-extraneous-dependencies": [
       "error",
       { "devDependencies": ["vite.config.js"] }
+    ],
+    "no-param-reassign": [
+      "error",
+      { "props": true, "ignorePropertyModificationsFor": ["state"] }
     ]
   }
 }
