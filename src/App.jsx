@@ -8,6 +8,7 @@ import Home from './Home.jsx'; // Import the new Home page
 import Profile from './Profile.jsx'; // Import the new Profile page
 import Counter from './Counter.jsx'; // Import the Counter component
 import HelloWorld from './HelloWorld.jsx';
+import BuggyCounter from './BuggyCounter.jsx';
 
 export default function App() {
   // Use the hook to get the 't' (translate) function and the 'i18n' instance
@@ -24,6 +25,8 @@ export default function App() {
       <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
         {/* We can keep your translated title at the top of every page! */}
         <h1>{t('welcome_message')}</h1>
+
+        <BuggyCounter />
 
         {/* The Routes component handles swapping out the page content based on the URL */}
         <div
