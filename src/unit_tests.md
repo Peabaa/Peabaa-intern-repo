@@ -337,3 +337,43 @@ React Testing Library (RTL) forces you to test your components exactly how a use
 ### What challenges did you encounter when simulating user interaction?
 
 When simulating user interactions (like typing in a form or clicking a button), the biggest challenge is dealing with asynchronous updates and React's rendering cycle. Because React takes a fraction of a millisecond to redraw the screen after a click, running an assertion immediately after firing an event can cause the test to fail. You have to remember to use asynchronous tools like `await waitFor()` or `findBy...` queries to pause the test just long enough for the UI to catch up with the interaction.
+
+## Issue #20 Introduction to Unit Testing with Jest
+
+### **mathUtils.js**
+
+```javascript
+// A simple utility function that adds two numbers
+export default function add(a, b) {
+  return a + b;
+}
+```
+
+### **mathUtils.test.js**
+
+```javascript
+import add from './mathUtils';
+
+describe('Math Utility Functions', () => {
+  it('should correctly add two positive numbers', () => {
+    // We expect the result of add(2, 3) to strictly equal 5
+    expect(add(2, 3)).toBe(5);
+  });
+
+  it('should correctly handle negative numbers', () => {
+    expect(add(-5, 10)).toBe(5);
+  });
+
+  it('should correctly handle zeros', () => {
+    expect(add(0, 0)).toBe(0);
+  });
+});
+```
+
+### Why is automated testing important in software development?
+
+Automated testing is crucial because it prevents "regressions"—which happen when a developer adds a new feature but accidentally breaks an old one. By having a suite of automated tests that run every time code is saved or pushed, developers can refactor code, update libraries, and add features with complete confidence that the core functionality of the application is still perfectly intact.
+
+### What did you find challenging when writing your first Jest test?
+
+The initial challenge is learning the specific syntax and structure of the testing framework (understanding how `describe` blocks group tests, how `it` or `test` blocks define individual cases, and how `expect().toBe()` creates assertions). Additionally, ensuring the environment is configured correctly so the linter (like ESLint) doesn't throw false-positive errors about undefined global variables like `describe` or `expect`.
