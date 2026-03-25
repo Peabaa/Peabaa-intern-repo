@@ -95,3 +95,28 @@ export const selectCount = (state) => state.counter.value;
 ### What are the benefits of using selectors instead of directly accessing state?
 
 Using selectors provides two massive benefits: **Reusability** and **Encapsulation**. If you directly access state in ten different components by writing `useSelector((state) => state.counter.value)`, and you later decide to change the structure of your Redux store (e.g., nesting `value` inside a `data` object), you would have to manually hunt down and update the path in all ten components. By using a selector like `selectCount`, you encapsulate that logic. You only have to update the path in one single place (inside the slice file), and every component using that selector will automatically receive the correct updated data. It acts as a single, highly maintainable source of truth.
+
+## Issue #28 Introduction to Redux Toolkit
+
+### **store.js**
+
+```javascript
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counterSlice';
+
+// 1. Remove the "export" keyword from this line
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+
+// 2. Export it as the default at the bottom!
+export default store;
+```
+
+### When should you use Redux instead of useState?
+
+You should use `useState` for local, component-specific memory (like tracking if a temporary dropdown menu is open, or reading the text actively being typed into a specific form input).
+
+You should use Redux when state is "global" and needs to be shared across many different, loosely connected components in your application (like user authentication status, a shopping cart, or a global dark mode theme). If you find yourself passing props down through multiple layers of components that don't actually need the data just to get it to a deeply nested child (a problem known as "Prop Drilling"), it is highly recommended to move that data into Redux.
