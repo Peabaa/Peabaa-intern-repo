@@ -1,13 +1,20 @@
 /* eslint-disable no-unused-vars */
-
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, selectCount } from './counterSlice';
 import Button from './Button.jsx';
 
 export default function Counter() {
-  const [count, setCount] = useState(0);
+  // 1. Grab the Redux state and dispatch tools instead of useState
+  const count = useSelector(selectCount);
+  const dispatch = useDispatch();
+
+  // 2. Determine the dynamic message based on the Redux state
+  let message = 'Keep clicking!';
+  if (count >= 10) message = "Whoa, that's a high number!";
+  if (count < 0) message = "We're in the negatives!";
 
   return (
-    // Tailwind classes for a centered card with a border and shadow
     <div className="max-w-sm mx-auto mt-10 p-6 bg-white rounded-xl shadow-md border border-gray-200 flex flex-col items-center space-y-4">
       <h2 className="text-2xl font-bold text-gray-800">Counter</h2>
 
@@ -18,10 +25,13 @@ export default function Counter() {
         {count}
       </p>
 
-      {/* Flexbox container to space out the buttons */}
+      {/* 3. Display the dynamic message required by the ticket */}
+      <p className="text-sm text-gray-600 italic">{message}</p>
+
       <div className="flex space-x-4 w-full justify-center mt-4">
-        <Button onClick={() => setCount((prev) => prev - 1)}>Decrease</Button>
-        <Button onClick={() => setCount((prev) => prev + 1)}>Increase</Button>
+        {/* 4. Fire off the Redux actions instead of standard state setters */}
+        <Button onClick={() => dispatch(decrement())}>Decrease</Button>
+        <Button onClick={() => dispatch(increment())}>Increase</Button>
       </div>
     </div>
   );
